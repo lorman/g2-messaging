@@ -39,7 +39,7 @@ module Messaging
       end
 
       def produce(value, topic:, key: nil)
-        return log(*args) if config.debug_mode
+        return log(value, topic: topic, key: key) if config.debug_mode
 
         async_pool.with do |c|
           c.produce value, topic: "#{config.prefix}#{topic}", key: key
@@ -47,7 +47,7 @@ module Messaging
       end
 
       def produce!(value, topic:, key: nil)
-        return log(*args) if config.debug_mode
+        return log(value, topic: topic, key: key) if config.debug_mode
 
         sync_pool.with do |c|
           c.produce value, topic: "#{config.prefix}#{topic}", key: key
