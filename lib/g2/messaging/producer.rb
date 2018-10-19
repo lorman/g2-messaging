@@ -4,8 +4,6 @@ require 'g2/messaging'
 module Messaging
   class Producer
     class << self
-      attr_accessor :debug_mode
-
       def reset
         shutdown
         @async_pool = nil
@@ -41,14 +39,16 @@ module Messaging
       end
 
       def produce(value, topic:, key: nil)
-        return if debug_mode
+        return log(*args) if config.debug_mode
+
         async_pool.with do |c|
           c.produce value, topic: "#{config.prefix}#{topic}", key: key
         end
       end
 
       def produce!(value, topic:, key: nil)
-        return if debug_mode
+        return log(*args) if config.debug_mode
+
         sync_pool.with do |c|
           c.produce value, topic: "#{config.prefix}#{topic}", key: key
           c.deliver_messages
@@ -58,6 +58,13 @@ module Messaging
       def shutdown
         async_pool.shutdown { |producer| producer.shutdown }
         sync_pool.shutdown { |producer| producer.shutdown }
+      end
+
+      def log(value, topic:, key: nil)
+        config.logger.warn('*' * 100)
+        config.logger.warn("Message suppressed: #{topic}; #{key}")
+        config.logger.warn(value)
+        config.logger.warn('*' * 100)
       end
 
       def prepare_cleanup

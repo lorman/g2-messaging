@@ -5,6 +5,9 @@ module Messaging
     attr_writer :error_reporter
     env_prefix :kafka
 
+    desc 'When in debug mode, messages will be logged but not delivered'
+    boolean :debug_mode, default: false
+
     desc 'Location of json-schema files'
     string :schema_path, default: File.join(File.dirname(__FILE__), '../../../schema')
 
