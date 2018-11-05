@@ -4,13 +4,13 @@ module Messaging
       def perform_now(message, topic:, key: nil)
         validate! message
 
-        Messaging::Producer.produce!(wrapped(message).to_json, topic: topic, key: key)
+        Messaging.produce!(wrapped(message).to_json, topic: topic, key: key)
       end
 
       def perform_later(message, topic:, key: nil)
         validate! message
 
-        Messaging::Producer.produce(wrapped(message).to_json, topic: topic, key: key)
+        Messaging.produce(wrapped(message).to_json, topic: topic, key: key)
       end
 
       def validate!(message)

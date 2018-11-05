@@ -2,7 +2,9 @@ require 'king_konf'
 
 module Messaging
   class Config < KingKonf::Config
-    attr_writer :error_reporter
+    attr_writer :error_reporter, :bus
+    attr_accessor :redis_pool
+
     env_prefix :kafka
 
     desc 'When in debug mode, messages will be logged but not delivered'
@@ -30,7 +32,7 @@ module Messaging
     integer :delivery_interval,  default: 5
 
     desc 'Timeout for producer pool'
-    integer :delivery_timeout,  default: 15
+    integer :delivery_timeout, default: 15
 
     desc '# of messages that can be queued up by producer'
     integer :max_queue_size, default: 5000
@@ -44,10 +46,10 @@ module Messaging
     desc 'Seconds to wait on socket, this is a long runner'
     integer :socket_timeout, default: 15
 
-    desc 'Racecar seconds to wait on connection'
+    desc 'Consumer seconds to wait on connection'
     integer :racecar_connect_timeout, default: 10
 
-    desc 'Racecar seconds to wait on socket'
+    desc 'Consumer seconds to wait on socket'
     integer :racecar_socket_timeout, default: 30
 
     string :client_cert
@@ -63,6 +65,10 @@ module Messaging
       @file.close
 
       @file.path
+    end
+
+    def bus
+      @bus ||= :kafka
     end
 
     def logger

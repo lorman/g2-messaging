@@ -2,15 +2,15 @@ require 'g2/messaging/version'
 require 'g2/messaging/schema_tools/attributes'
 require 'g2/messaging/config'
 require 'g2/messaging/consumer'
+require 'g2/messaging/bus/resolve'
 require 'g2/messaging/backends/inline'
-require 'g2/messaging/base_consumer'
-require 'g2/messaging/producer'
 require 'g2/messaging/deliver'
 require 'g2/messaging/logger'
 require 'g2/messaging/messages'
 require 'g2/messaging/schema_loader'
 require 'g2/messaging/active_record'
 require 'g2/messaging/validation_error'
+require 'g2/messaging/railtie' if defined?(Rails)
 
 module Messaging
   def self.config
@@ -23,6 +23,22 @@ module Messaging
 
   def self.load_schema!
     Messaging::SchemaLoader.new.load_all
+  end
+
+  def self.produce!(*args)
+    bus.producer.produce!(*args)
+  end
+
+  def self.produce(*args)
+    bus.producer.produce(*args)
+  end
+
+  def self.start_runner(consumer_class)
+    bus.runner.run(consumer_class)
+  end
+
+  def self.bus
+    @bus ||= Messaging::Bus::Resolve.new(config.bus)
   end
 
   def self.start_racecar!
