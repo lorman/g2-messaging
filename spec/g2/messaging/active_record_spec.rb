@@ -54,7 +54,7 @@ describe Messaging::ActiveRecord do
 
     describe '#post_to_messaging' do
       it 'calls out to async producer' do
-        expect(Messaging::Producer).to receive(:produce).with(
+        expect(Messaging::Bus::Kafka::Producer).to receive(:produce).with(
           '{"schema_model":"messages/changed_records/fake_model","model":"FakeModel","data":{"id":1,"name":"name"}}',
           topic: 'catalog-changes', key: 'fake_model-1'
         )
@@ -71,7 +71,7 @@ describe Messaging::ActiveRecord do
 
     describe '#post_to_messaging!' do
       it 'calls out to sync producer' do
-        expect(Messaging::Producer).to receive(:produce!).with(
+        expect(Messaging::Bus::Kafka::Producer).to receive(:produce!).with(
           '{"schema_model":"messages/changed_records/fake_model","model":"FakeModel","data":{"id":1,"name":"name"}}',
           topic: 'catalog-changes', key: 'fake_model-1'
         )

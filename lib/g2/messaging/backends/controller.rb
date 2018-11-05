@@ -19,6 +19,7 @@ module Messaging
 
       def perform(value, key)
         attrs = JSON.parse(value)
+
         fail Messaging::ValidationError unless attrs.key?('schema_model') && attrs.key?('data')
 
         message = route(attrs)
