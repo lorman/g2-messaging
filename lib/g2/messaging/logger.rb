@@ -36,6 +36,10 @@ module Messaging
 
         puts message
       end
+
+      def respond_to_missing?(name, _include_private = false)
+        METHODS.find { |i| i == name }.present? || super
+      end
     end
   end
 end

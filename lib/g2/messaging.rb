@@ -1,7 +1,6 @@
 require 'g2/messaging/version'
 require 'g2/messaging/schema_tools/attributes'
 require 'g2/messaging/config'
-require 'g2/messaging/consumer'
 require 'g2/messaging/bus/resolve'
 require 'g2/messaging/backends/inline'
 require 'g2/messaging/deliver'

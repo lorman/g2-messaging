@@ -17,8 +17,8 @@ describe Messaging::Logger do
   context 'when logger undefined' do
     subject { Messaging::Logger.new(nil) }
 
-    it 'should not fail' do
-      subject.info('testing logger')
+    it 'falls back to stub' do
+      expect(subject.logger).to be_a Messaging::Logger::Stub
     end
   end
 end
