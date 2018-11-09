@@ -15,9 +15,9 @@ module Messaging
         end
 
         def run
+          Messaging.start_racecar!
           Racecar.config.load_consumer_class(consumer_class)
           Racecar.config.validate!
-          Messaging.start_racecar!
           Racecar.run(consumer)
         end
 
