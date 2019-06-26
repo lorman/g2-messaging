@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "king_konf"
   spec.add_dependency "racecar", "0.3.7"
-  spec.add_dependency "connection_pool", "2.2.1"
+  spec.add_dependency "connection_pool", "~> 2.2"
   spec.add_dependency "activesupport", ">= 3.0"
   spec.add_dependency "activemodel", ">= 3.0"
   spec.add_dependency "ruby-kafka", '0.5.5'
